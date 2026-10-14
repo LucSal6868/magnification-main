@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RegisterDescription
+	xmlns="http://www.genicam.org/GenApi/Version_1_1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.genicam.org/GenApi/Version_1_1 http://www.genicam.org/GenApi/GenApiSchema_Version_1_1.xsd"
+	ModelName="SimCam1000"
+	VendorName="Critical_Link"
+	MajorVersion="1"
+	MinorVersion="0"
+	SubMinorVersion="1"
+	ProductGuid="794996d7-a020-44f8-809b-d2f6dfdcb93b"
+	VersionGuid="5ab6cf44-5a0d-4709-a89c-07a2364cd107"
+	StandardNameSpace="USB"
+	SchemaMajorVersion="1"
+	SchemaMinorVersion="1"
+	SchemaSubMinorVersion="0"
+	ToolTip="GenTL Simulated Camera" >
+
+	<Category Name="Root" NameSpace="Standard">
+		<pFeature>DeviceControl</pFeature>
+		<pFeature>ImageFormatControl</pFeature>
+		<pFeature>AcquisitionControl</pFeature>
+		<pFeature>TransportLayerControl</pFeature>
+		<pFeature>Debug</pFeature>
+	</Category>
+
+	<Integer Name="TLParamsLocked" NameSpace="Standard">
+		<ToolTip>Indicates Transport Layer has locked params (acquisition in progress)</ToolTip>
+		<Visibility>Invisible</Visibility>
+		<ImposedAccessMode>RW</ImposedAccessMode>
+		<Value>0</Value>
+		<Min>0</Min>
+		<Max>1</Max>
+	</Integer>
+	<Integer Name="CamRegBaseAddress">
+		<Value>0x30000</Value>
+	</Integer>
+	<!-- ================  Device Control  ================ -->
+	<Group Comment="Device Control">
+		<Category Name="DeviceControl" NameSpace="Standard">
+			<pFeature>DeviceReset</pFeature>
+			<pFeature>DeviceVendorName</pFeature>
+			<pFeature>DeviceModelName</pFeature>
+			<pFeature>DeviceManufacturerInfo</pFeature>
+			<pFeature>DeviceVersion</pFeature>
+			<pFeature>DeviceFirmwareVersion</pFeature>
+			<pFeature>DeviceSerialNumber</pFeature>
+			<pFeature>DeviceSFNCVersionMajor</pFeature>
+			<pFeature>DeviceSFNCVersionMinor</pFeature>
+			<pFeature>DeviceSFNCVersionSubMinor</pFeature>
+			<pFeature>SensorTemperature</pFeature>
+			<pFeature>SoftwareBuildDate</pFeature>
+			<pFeature>DebugBuffer</pFeature>
+			<pFeature>DebugBufferBytesWritten</pFeature>
+		</Category>
+
+		<Command Name="DeviceReset" NameSpace="Standard">
+			<ToolTip>Reset the device to power-up state.</ToolTip>
+			<Description>This command is used to reset the device and to put it in its power up state.</Description>
+			<DisplayName>Device Reset</DisplayName>
+			<Visibility>Beginner</Visibility>
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<pValue>DeviceResetReg</pValue>
+			<CommandValue>0</CommandValue>
+		</Command>
+		<IntReg Name="DeviceResetReg">
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0x2100</Address>
+			<Length>4</Length>
+			<AccessMode>WO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>WriteThrough</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<StringReg Name="DeviceVendorName" NameSpace="Standard">
+			<ToolTip>Name of camera vendor</ToolTip>
+			<DisplayName>Vendor Name</DisplayName>
+			<Address>0x4</Address>
+			<Length>64</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+		</StringReg>
+		<StringReg Name="DeviceModelName" NameSpace="Standard">
+			<ToolTip>Name of the camera model</ToolTip>
+			<DisplayName>Model Name</DisplayName>
+			<Address>0x44</Address>
+			<Length>64</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+		</StringReg>
+		<StringReg Name="DeviceFirmwareVersion" NameSpace="Standard">
+			<DisplayName>Device Firmware Version</DisplayName>
+			<Address>0x84</Address>
+			<Length>64</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+		</StringReg>
+		<StringReg Name="DeviceVersion" NameSpace="Standard">
+			<DisplayName>Device Version</DisplayName>
+			<Address>0xc4</Address>
+			<Length>64</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+		</StringReg>
+		<StringReg Name="DeviceManufacturerInfo" NameSpace="Standard">
+			<DisplayName>Manufacturer Info</DisplayName>
+			<Address>0x104</Address>
+			<Length>64</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+		</StringReg>
+		<!-- DeviceID and DeviceSerialNumber are synonynms -->
+		<StringReg Name="DeviceSerialNumber" NameSpace="Standard">
+			<Description>Displays the factory set camera serial number.</Description>
+			<DisplayName>Device Serial Number</DisplayName>
+			<Address>0x144</Address>
+			<Length>64</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+		</StringReg>
+
+		<Integer Name="DeviceSFNCVersionMajor" NameSpace="Standard">
+			<ToolTip>Major version of the Standard Features Naming Convention that was used to create GenICam XML</ToolTip>
+			<DisplayName>Device SFNC Version Major</DisplayName>
+			<ImposedAccessMode>RO</ImposedAccessMode>
+			<Value>2</Value>
+		</Integer>
+		<Integer Name="DeviceSFNCVersionMinor" NameSpace="Standard">
+			<ToolTip>Minor version of the Standard Features Naming Convention that was used to create GenICam XML</ToolTip>
+			<DisplayName>Device SFNC Version Minor</DisplayName>
+			<ImposedAccessMode>RO</ImposedAccessMode>
+			<Value>2</Value>
+		</Integer>
+		<Integer Name="DeviceSFNCVersionSubMinor" NameSpace="Standard">
+			<ToolTip>Sub-Minor version of the Standard Features Naming Convention that was used to create GenICam XML</ToolTip>
+			<DisplayName>Device SFNC Version SubMinor</DisplayName>
+			<ImposedAccessMode>RO</ImposedAccessMode>
+			<Value>0</Value>
+		</Integer>
+		<Float Name="SensorTemperature" NameSpace="Standard">
+			<Description>Sensor temperature in degrees C.</Description>
+			<pValue>SensorTemperatureRegister</pValue>
+			<Min>-200.0</Min>
+			<Max>200.0</Max>
+		</Float>
+		<FloatReg Name="SensorTemperatureRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa044</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<PollingTime>1000</PollingTime>
+			<Endianess>BigEndian</Endianess>
+			<Unit>Degrees C</Unit>
+			<Representation>PureNumber</Representation>
+			<DisplayNotation>Fixed</DisplayNotation>
+			<DisplayPrecision>1</DisplayPrecision>
+		</FloatReg>
+		<StringReg Name="SoftwareBuildDate" NameSpace="Custom">
+			<ToolTip>Camera software build date</ToolTip>
+			<Description>Build date of the camera software.</Description>
+			<DisplayName>Device Software Build Date</DisplayName>
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0x3008</Address>
+			<Length>64</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+		</StringReg>
+		<Register Name="DebugBuffer" NameSpace="Custom">
+			<Description>This register contains logs from the sensor.  (char*)</Description>
+			<Address>0x00301000</Address>
+			<Length>0x10000</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<pInvalidator>DebugBufferBytesWritten</pInvalidator>
+		</Register>
+		<Integer Name="DebugBufferBytesWritten" NameSpace="Custom">
+			<Description>Number of Bytes written to debug buffer</Description>
+			<DisplayName>Debug Buffer</DisplayName>
+			<pValue>DebugBufferBytesWrittenReg</pValue>
+		</Integer>
+		<IntReg Name="DebugBufferBytesWrittenReg" NameSpace="Custom">
+			<pIsLocked>TLParamsLocked</pIsLocked>
+			<Address>0x00300000</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+	</Group>
+
+	<!-- ================  Image Format Control  ================ -->
+	<Group Comment="Image Format Control">
+		<Category Name="ImageFormatControl" NameSpace="Standard">
+			<pFeature>RegionSelector</pFeature>
+			<pFeature>RegionMode</pFeature>
+			<pFeature>OffsetX</pFeature>
+			<pFeature>OffsetY</pFeature>
+			<pFeature>Width</pFeature>
+			<pFeature>Height</pFeature>
+			<pFeature>SensorWidth</pFeature>
+			<pFeature>SensorHeight</pFeature>
+			<pFeature>PixelFormat</pFeature>
+			<pFeature>TestPattern</pFeature>
+			<pFeature>GridOffsetX</pFeature>
+			<pFeature>GridOffsetY</pFeature>
+			<pFeature>GridStrideX</pFeature>
+			<pFeature>GridStrideY</pFeature>
+			<pFeature>NoiseMean</pFeature>
+			<pFeature>NoiseStdDev</pFeature>
+		</Category>
+		<Enumeration Name="RegionSelector" NameSpace="Standard">
+			<DisplayName>Selects the ROI to operate on.</DisplayName>
+			<EnumEntry Name="Region0" NameSpace="Standard">
+				<Value>0</Value>
+			</EnumEntry>
+			<EnumEntry Name="Region1" NameSpace="Standard">
+				<Value>1</Value>
+			</EnumEntry>
+			<EnumEntry Name="Region2" NameSpace="Standard">
+				<Value>2</Value>
+			</EnumEntry>
+			<EnumEntry Name="Region3" NameSpace="Standard">
+				<Value>3</Value>
+			</EnumEntry>
+			<pValue>RegionSelectorReg</pValue>
+			<pSelected>RegionModeReg</pSelected>
+			<pSelected>OffsetXRegister</pSelected>
+			<pSelected>OffsetYRegister</pSelected>
+			<pSelected>ROIWidthRegister</pSelected>
+			<pSelected>ROIHeightRegister</pSelected>
+		</Enumeration>
+		<Enumeration Name="RegionMode" NameSpace="Standard">
+			<DisplayName>Controls if the selected Region of interest is active and streaming.</DisplayName>
+			<EnumEntry Name="Off" NameSpace="Standard">
+				<Value>0</Value>
+			</EnumEntry>
+			<EnumEntry Name="On" NameSpace="Standard">
+				<Value>1</Value>
+			</EnumEntry>
+			<pValue>RegionModeReg</pValue>
+			<pSelected>RegionSelector</pSelected>
+		</Enumeration>
+		<IntReg Name="RegionSelectorReg">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xA098</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<IntReg Name="RegionModeReg">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xA09C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Integer Name="SensorWidth" NameSpace="Standard">
+			<ToolTip>Effective width of the sensor in pixels.</ToolTip>
+			<Description>Effective width of the sensor in pixels.</Description>
+			<DisplayName>Sensor Width</DisplayName>
+			<Visibility>Expert</Visibility>
+			<ImposedAccessMode>RO</ImposedAccessMode>
+			<Value>4096</Value>
+		</Integer>
+		<Integer Name="SensorHeight" NameSpace="Standard">
+			<ToolTip>Effective height of the sensor in pixels.</ToolTip>
+			<Description>Effective height of the sensor in pixels.</Description>
+			<DisplayName>Sensor Height</DisplayName>
+			<Visibility>Expert</Visibility>
+			<ImposedAccessMode>RO</ImposedAccessMode>
+			<Value>4096</Value>
+		</Integer>
+		<Integer Name="OffsetX" NameSpace="Standard">
+			<Description>X offset of image, in pixels.</Description>
+			<pValue>OffsetXRegister</pValue>
+			<Min>0</Min>
+			<pMax>OffsetXMax</pMax>
+			<Inc>2</Inc>
+		</Integer>
+		<Integer Name="OffsetY" NameSpace="Standard">
+			<Description>Y offset of image, in pixels.</Description>
+			<pValue>OffsetYRegister</pValue>
+			<Min>0</Min>
+			<pMax>OffsetYMax</pMax>
+			<Inc>2</Inc>
+		</Integer>
+		<Integer Name="Width" NameSpace="Standard">
+			<Description>Width of image, in pixels.</Description>
+			<pValue>ROIWidthRegister</pValue>
+			<Min>2</Min>
+			<pMax>ROIWidthMax</pMax>
+			<Inc>2</Inc>
+		</Integer>
+		<Integer Name="Height" NameSpace="Standard">
+			<Description>Height of image, in pixels.</Description>
+			<pValue>ROIHeightRegister</pValue>
+			<Min>2</Min>
+			<pMax>ROIHeightMax</pMax>
+			<Inc>2</Inc>
+		</Integer>
+		<Integer Name="WidthMax" NameSpace="Standard">
+			<Description>Max width of image, in pixels.</Description>
+			<pValue>SensorWidth</pValue>
+		</Integer>
+		<Integer Name="HeightMax" NameSpace="Standard">
+			<Description>Max height of image, in pixels.</Description>
+			<pValue>SensorHeight</pValue>
+		</Integer>
+		<IntSwissKnife Name="OffsetXMax" NameSpace="Standard">
+			<Description>Maximum X offset of image, in pixels.</Description>
+			<pVariable Name="WIDTH">ROIWidthRegister</pVariable>
+			<pVariable Name="WIDTHMAX">WidthMax</pVariable>
+			<Formula>WIDTHMAX - WIDTH</Formula>
+		</IntSwissKnife>
+		<IntSwissKnife Name="OffsetYMax" NameSpace="Standard">
+			<Description>Maximum Y offset of image, in pixels.</Description>
+			<pVariable Name="HEIGHT">ROIHeightRegister</pVariable>
+			<pVariable Name="HEIGHTMAX">HeightMax</pVariable>
+			<Formula>HEIGHTMAX - HEIGHT</Formula>
+		</IntSwissKnife>
+		<IntSwissKnife Name="ROIWidthMax" NameSpace="Standard">
+			<Description>Maximum width of image, in pixels.</Description>
+			<pVariable Name="XOFFSET">OffsetXRegister</pVariable>
+			<pVariable Name="WIDTHMAX">WidthMax</pVariable>
+			<Formula>WIDTHMAX - XOFFSET</Formula>
+		</IntSwissKnife>
+		<IntSwissKnife Name="ROIHeightMax" NameSpace="Standard">
+			<Description>Maximum height of image, in pixels.</Description>
+			<pVariable Name="YOFFSET">OffsetYRegister</pVariable>
+			<pVariable Name="HEIGHTMAX">HeightMax</pVariable>
+			<Formula>HEIGHTMAX - YOFFSET</Formula>
+		</IntSwissKnife>
+		<IntReg Name="OffsetXRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa010</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<IntReg Name="OffsetYRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa014</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<IntReg Name="ROIWidthRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa008</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<IntReg Name="ROIHeightRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa00C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="PixelFormat" NameSpace="Standard">
+			<DisplayName>Pixel format</DisplayName>
+			<EnumEntry Name="Mono8" NameSpace="Standard">
+				<Value>0x01080001</Value>
+			</EnumEntry>
+			<EnumEntry Name="Mono10" NameSpace="Standard">
+				<Value>0x01100003</Value>
+			</EnumEntry>
+			<EnumEntry Name="Mono10p" NameSpace="Standard">
+				<Value>0x010A0046</Value>
+			</EnumEntry>
+			<EnumEntry Name="Mono12" NameSpace="Standard">
+				<Value>0x01100005</Value>
+			</EnumEntry>
+			<EnumEntry Name="Mono12p" NameSpace="Standard">
+				<Value>0x010C0047</Value>
+			</EnumEntry>
+			<EnumEntry Name="Mono14" NameSpace="Standard">
+				<Value>0x01100025</Value>
+			</EnumEntry>
+			<EnumEntry Name="Mono16" NameSpace="Standard">
+				<Value>0x01100007</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerBG8" NameSpace="Standard">
+				<Value>0x0108000B</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGB8" NameSpace="Standard">
+				<Value>0x0108000A</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerRG8" NameSpace="Standard">
+				<Value>0x01080009</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGR8" NameSpace="Standard">
+				<Value>0x01080008</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerBG10" NameSpace="Standard">
+				<Value>0x0110000F</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGB10" NameSpace="Standard">
+				<Value>0x0110000E</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerRG10" NameSpace="Standard">
+				<Value>0x0110000D</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGR10" NameSpace="Standard">
+				<Value>0x0110000C</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerBG12" NameSpace="Standard">
+				<Value>0x01100013</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGB12" NameSpace="Standard">
+				<Value>0x01100012</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerRG12" NameSpace="Standard">
+				<Value>0x01100011</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGR12" NameSpace="Standard">
+				<Value>0x01100010</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerBG12p" NameSpace="Standard">
+				<Value>0x010C0053</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGB12p" NameSpace="Standard">
+				<Value>0x010C0055</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerRG12p" NameSpace="Standard">
+				<Value>0x010C0059</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGR12p" NameSpace="Standard">
+				<Value>0x010C0057</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerBG14" NameSpace="Standard">
+				<Value>0x0110010C</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGB14" NameSpace="Standard">
+				<Value>0x0110010B</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerRG14" NameSpace="Standard">
+				<Value>0x0110010A</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGR14" NameSpace="Standard">
+				<Value>0x01100109</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerBG16" NameSpace="Standard">
+				<Value>0x01100031</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGB16" NameSpace="Standard">
+				<Value>0x01100030</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerRG16" NameSpace="Standard">
+				<Value>0x0110002F</Value>
+			</EnumEntry>
+			<EnumEntry Name="BayerGR16" NameSpace="Standard">
+				<Value>0x0110002E</Value>
+			</EnumEntry>
+			<EnumEntry Name="RGB8" NameSpace="Standard">
+				<Value>0x02180014</Value>
+			</EnumEntry>
+			<pValue>PixelFormatRegister</pValue>
+			</Enumeration>
+		<IntReg Name="PixelFormatRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa020</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<IntReg Name="TestPatternRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa05c</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="TestPattern" NameSpace="Standard">
+			<Description>This control allows the user to select what data the simulated camera will generate.</Description>
+			<DisplayName>Test pattern</DisplayName>
+			<EnumEntry Name="ColorBars" NameSpace="Standard">
+				<Value>0</Value>
+			</EnumEntry>
+			<EnumEntry Name="GradientX" NameSpace="Standard">
+				<Value>1</Value>
+			</EnumEntry>
+			<EnumEntry Name="GradientY" NameSpace="Standard">
+				<Value>2</Value>
+			</EnumEntry>
+			<EnumEntry Name="Grid" NameSpace="Standard">
+			    <Value>3</Value>
+			</EnumEntry>
+			<EnumEntry Name="Noise" NameSpace="Standard">
+			    <Value>4</Value>
+			</EnumEntry>
+			<pValue>TestPatternRegister</pValue>
+		</Enumeration>
+		<IntReg Name="GridOffsetXRegister" NameSpace="Custom">
+		    <pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa060</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Integer Name="GridOffsetX" NameSpace="Custom">
+		    <Description>XOffset to start grid value in.</Description>
+			<pValue>GridOffsetXRegister</pValue>
+			<Min>0</Min>
+			<pMax>ROIWidthMax</pMax>
+		</Integer>
+		<IntReg Name="GridStrideXRegister" NameSpace="Custom">
+		    <pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa064</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Integer Name="GridStrideX" NameSpace="Custom">
+		    <Description>Number of pixels to skip in X dimension of Grid pattern.</Description>
+			<pValue>GridStrideXRegister</pValue>
+			<Min>0</Min>
+			<pMax>ROIWidthMax</pMax>
+		</Integer>
+		<IntReg Name="GridOffsetYRegister" NameSpace="Custom">
+		    <pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa068</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Integer Name="GridOffsetY" NameSpace="Custom">
+		    <Description>YOffset to start grid value in.</Description>
+			<pValue>GridOffsetYRegister</pValue>
+			<Min>0</Min>
+			<pMax>ROIHeightMax</pMax>
+		</Integer>
+		<IntReg Name="GridStrideYRegister" NameSpace="Custom">
+		    <pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa06C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Integer Name="GridStrideY" NameSpace="Custom">
+		    <Description>Number of pixels to skip in Y dimension of Grid pattern.</Description>
+			<pValue>GridStrideYRegister</pValue>
+			<Min>0</Min>
+			<pMax>ROIHeightMax</pMax>
+		</Integer>
+		<Float Name="NoiseMean" NameSpace="Custom">
+			<Description>Simulated Noise Mean.</Description>
+			<pValue>NoiseMeanRegister</pValue>
+			<Min>0.0</Min>
+		</Float>
+		<FloatReg Name="NoiseMeanRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa070</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Endianess>LittleEndian</Endianess>
+			<Unit>Counts</Unit>
+			<Representation>PureNumber</Representation>
+			<DisplayNotation>Fixed</DisplayNotation>
+			<DisplayPrecision>2</DisplayPrecision>
+		</FloatReg>
+		<Float Name="NoiseStdDev" NameSpace="Custom">
+			<Description>Simulated Noise Variance.</Description>
+			<pValue>NoiseStdDevRegister</pValue>
+			<Min>1.0</Min>
+		</Float>
+		<FloatReg Name="NoiseStdDevRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa074</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Endianess>LittleEndian</Endianess>
+			<Unit>Counts</Unit>
+			<Representation>PureNumber</Representation>
+			<DisplayNotation>Fixed</DisplayNotation>
+			<DisplayPrecision>2</DisplayPrecision>
+		</FloatReg>
+	</Group>
+
+	<!-- ================  Acquisition Control  ================ -->
+	<Group Comment="Acquisition Control">
+		<Category Name="AcquisitionControl" NameSpace="Custom">
+			<pFeature>AcquisitionMode</pFeature>
+			<pFeature>AcquisitionStart</pFeature>
+			<pFeature>AcquisitionStop</pFeature>
+			<pFeature>ExposureTime</pFeature>
+			<pFeature>AcquisitionFrameRate</pFeature>
+			<pFeature>AcquisitionFramePeriod</pFeature>
+			<pFeature>AcquisitionFrameCount</pFeature>
+		</Category>
+		<Command Name="AcquisitionStart" NameSpace="Standard">
+			<Description>Start acquisition.</Description>
+			<pValue>AcquisitionCommandRegister1</pValue>
+			<CommandValue>1</CommandValue>
+		</Command>
+		<Command Name="AcquisitionStop" NameSpace="Standard">
+			<Description>Stop acquisition.</Description>
+			<pValue>AcquisitionCommandRegister2</pValue>
+			<CommandValue>1</CommandValue>
+		</Command>
+		<IntReg Name="AcquisitionCommandRegister1" NameSpace="Standard">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa018</Address>
+			<Length>4</Length>
+			<AccessMode>WO</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<IntReg Name="AcquisitionCommandRegister2" NameSpace="Standard">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa03c</Address>
+			<Length>4</Length>
+			<AccessMode>WO</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Enumeration Name="AcquisitionMode" NameSpace="Standard">
+			<DisplayName>Acquisition mode</DisplayName>
+			<EnumEntry Name="Continuous" NameSpace="Standard">
+				<Value>1</Value>
+			</EnumEntry>
+			<EnumEntry Name="SingleFrame" NameSpace="Standard">
+				<Value>2</Value>
+			</EnumEntry>
+			<EnumEntry Name="MultiFrame" NameSpace="Standard">
+				<Value>3</Value>
+			</EnumEntry>
+			<pValue>AcquisitionModeRegister</pValue>
+		</Enumeration>
+		<IntReg Name="AcquisitionModeRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa01c</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Converter Name="AcquisitionFrameRate" NameSpace="Standard">
+			<Description>Frame rate, in frames per second.</Description>
+			<FormulaTo>(1000000 / FROM)</FormulaTo>
+			<FormulaFrom>(1000000 / TO)</FormulaFrom>
+			<pValue>AcquisitionFramePeriod</pValue>
+		<Slope>Decreasing</Slope>
+		</Converter>
+		<Integer Name="AcquisitionFramePeriod" NameSpace="Standard">
+			<Description>Frame rate, in microseconds.</Description>
+			<pValue>AcquisitionFramePeriodRegister</pValue>
+			<Min>1000</Min>
+			<Max>5000000</Max>
+			<Inc>1</Inc>
+		</Integer>
+		<IntReg Name="AcquisitionFramePeriodRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa000</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Integer Name="AcquisitionFrameCount" NameSpace="Standard">
+			<Description>Number of frames to aquire in MultiFrame Acquisition mode.</Description>
+			<pValue>AcquisitionFrameCountRegister</pValue>
+			<Min>1</Min>
+			<Max>1000</Max>
+			<Inc>1</Inc>
+		</Integer>
+		<IntSwissKnife Name="AcquisitionFrameLocked">
+			<Visibility>Invisible</Visibility>
+			<pVariable Name="ACQUIS_MODE">AcquisitionMode</pVariable>
+			<pVariable Name="TLPARAMSLOCKED">TLParamsLocked</pVariable>
+			<Formula><![CDATA[ (ACQUIS_MODE <> 3 || TLPARAMSLOCKED) ? 1 : 0 ]]></Formula>
+		</IntSwissKnife>
+		<IntReg Name="AcquisitionFrameCountRegister" NameSpace="Custom">
+			<pIsLocked>AcquisitionFrameLocked</pIsLocked>
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa038</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Float Name="ExposureTime" NameSpace="Standard">
+			<Description>Exposure duration, in microseconds.</Description>
+			<pValue>ExposureTimeConverter</pValue>
+			<Min>10.0</Min>
+			<Max>10000000.0</Max>
+		</Float>
+		<Converter Name="ExposureTimeConverter" NameSpace="Custom">
+			<FormulaTo>FROM</FormulaTo>
+			<FormulaFrom>TO</FormulaFrom>
+			<pValue>ExposureTimeRegister</pValue>
+		</Converter>
+		<IntReg Name="ExposureTimeRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa004</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+	</Group>
+
+	<!-- ================  SensorPeekPoke ================ -->
+	<Group Comment="Sensor Peek/Poke">
+		<Category Name="SensorPeekPoke" NameSpace="Custom">
+			<pFeature>RegAddress</pFeature>
+			<pFeature>RegValue</pFeature>
+			<pFeature>ExecRead</pFeature>
+			<pFeature>ExecWrite</pFeature>
+		</Category>
+		<Integer Name="RegAddress" NameSpace="Custom">
+			<Description>Register address of the Peek/Poke</Description>
+			<Visibility>Expert</Visibility>
+			<pValue>RegAddressRegister</pValue>
+			<Min>0</Min>
+			<Max>2147483647</Max>
+			<Inc>1</Inc>
+		</Integer>
+		<IntReg Name="RegAddressRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xC000</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Integer Name="RegValue" NameSpace="Custom">
+			<Description>Value of the address peeked or to be written when poked</Description>
+			<Visibility>Expert</Visibility>
+			<pValue>RegValueRegister</pValue>
+			<Min>0</Min>
+			<Max>2147483647</Max>
+			<Inc>1</Inc>
+		</Integer>
+		<IntReg Name="RegValueRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xC004</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Command Name="ExecRead">
+			<ToolTip>Execute a read from the configured address</ToolTip>
+			<Description>Command reads and invalidates/replaces the RegValue register with the setting read back from the sensor.</Description>
+			<Visibility>Expert</Visibility>
+			<pValue>ExecReadReg</pValue>
+			<pCommandValue>RegAddressRegister</pCommandValue>
+		</Command>
+		<IntReg Name="ExecReadReg">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xC008</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+		<Command Name="ExecWrite">
+			<ToolTip>Execute a write from the configured address</ToolTip>
+			<Description>Command writes the value stored in the RegValue register to the sensor at the specified RegAddress location.</Description>
+			<Visibility>Expert</Visibility>
+			<pValue>ExecWriteReg</pValue>
+			<pCommandValue>RegValueRegister</pCommandValue>
+		</Command>
+		<IntReg Name="ExecWriteReg">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xC00C</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+	</Group>
+
+	<!-- ================  Transport Layer Control  ================ -->
+	<Group Comment="Transport Layer Control">
+		<Category Name="TransportLayerControl" NameSpace="Standard">
+			<pFeature>PayloadSize</pFeature>
+		</Category>
+		<Integer Name="PayloadSize" NameSpace="Standard">
+			<Description>Size of payload, in bytes</Description>
+			<pInvalidator>ROIWidthRegister</pInvalidator>
+			<pInvalidator>ROIHeightRegister</pInvalidator>
+			<pInvalidator>PixelFormatRegister</pInvalidator>
+			<pValue>PayloadSizeRegister</pValue>
+			<Min>16</Min>
+			<Max>95103360</Max>
+			<Inc>1</Inc>
+		</Integer>
+		<IntReg Name="PayloadSizeRegister" NameSpace="Custom">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xa024</Address>
+			<Length>4</Length>
+			<AccessMode>RO</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>LittleEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Group Comment="Debug">
+		<Category Name="Debug" NameSpace="Custom">
+			<pFeature>DebugLogSelector</pFeature>
+			<pFeature>DebugLogLevel</pFeature>
+		</Category>
+		<Enumeration Name="DebugLogSelector" NameSpace="Custom">
+			<DisplayName>Selects the debug category to adjust.</DisplayName>
+			<EnumEntry Name="Global" NameSpace="Custom">
+				<Value>0</Value>
+			</EnumEntry>
+			<EnumEntry Name="FrameLog" NameSpace="Custom">
+				<Value>1</Value>
+			</EnumEntry>
+			<EnumEntry Name="VoltageLog" NameSpace="Custom">
+				<Value>2</Value>
+			</EnumEntry>
+			<EnumEntry Name="TemperatureLog" NameSpace="Custom">
+				<Value>3</Value>
+			</EnumEntry>
+			<pValue>DebugLogSelectReg</pValue>
+			<pSelected>DebugLogLevel</pSelected>
+		</Enumeration>
+		<IntReg Name="DebugLogSelectReg">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xE000</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+		<Integer Name="DebugLogLevel" NameSpace="Custom">
+			<Description>Debug Log Level</Description>
+			<DisplayName>Debug Log Level</DisplayName>
+			<Visibility>Expert</Visibility>
+			<pValue>DebugLogLevelReg</pValue>
+			<Min>0</Min>
+			<Max>5</Max>
+		</Integer>
+		<IntReg Name="DebugLogLevelReg">
+			<pAddress>CamRegBaseAddress</pAddress>
+			<Address>0xE004</Address>
+			<Length>4</Length>
+			<AccessMode>RW</AccessMode>
+			<pPort>Device</pPort>
+			<Cachable>NoCache</Cachable>
+			<Sign>Unsigned</Sign>
+			<Endianess>BigEndian</Endianess>
+		</IntReg>
+	</Group>
+	<Port Name="Device" NameSpace="Standard">
+		<pInvalidator>PayloadSizeRegister</pInvalidator>
+	</Port>
+</RegisterDescription>

@@ -1,0 +1,22 @@
+{
+  "camera": {
+    "cti_path": "bin/GenTL.dll",
+    "pixel_format": "BayerRG8",
+    "exposure_us": 10000.0,
+    "frame_rate": 30.0,
+    "gain": null
+  },
+  "roi": {
+    "width": 1920,
+    "height": 1080,
+    "center": true,
+    "offset_x": 0,
+    "offset_y": 0
+  },
+  "streaming": {
+    "shm_name": "MityCamSharedMemory",
+    "downscale_output": false,
+    "target_width": 1920,
+    "target_height": 1080
+  }
+}

@@ -112,3 +112,32 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+// ------------------------------
+
+# Python virtual environments anywhere
+venv/
+.venv/
+**/venv/
+**/.venv/
+
+# Virtual environment executables (if needed)
+**/venv/bin/
+**/.venv/bin/
+**/venv/Scripts/
+**/.venv/Scripts/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+.env.*
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+.idea/
