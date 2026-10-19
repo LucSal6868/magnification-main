@@ -10,8 +10,8 @@ public class MityCamReceiver : MonoBehaviour
     [SerializeField] private bool launchPythonProcess = true;
 
     // Relative to the Assets/ folder
-    private readonly string relativePythonPath = "Python/.venv/Scripts/python.exe";
-    private readonly string relativeScriptPath = "Python/main.py";
+    [SerializeField] private readonly string relativePythonPath = "Python/venv/Scripts/python.exe";
+    [SerializeField] private readonly string relativeScriptPath = "Python/main.py";
 
     private Process _pythonProcess;
     private MemoryMappedFile _mmf;
