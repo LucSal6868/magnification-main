@@ -1,9 +1,9 @@
-
 using UnityEngine;
 
-public class GazeController : MonoBehaviour
+public class EyeTrackerController : MonoBehaviour
 {
     private EyeTrackerClass eyeTracker;
+
     [SerializeField] private float maxDistance = 20f;
     [SerializeField] private LayerMask gazeLayers = ~0;
 
@@ -12,8 +12,7 @@ public class GazeController : MonoBehaviour
 
     void Awake()
     {
-        if (eyeTracker == null)
-            eyeTracker = GetComponent<EyeTrackerClass>();
+        eyeTracker = GetComponent<EyeTrackerClass>();
     }
 
     void Update()
@@ -37,19 +36,17 @@ public class GazeController : MonoBehaviour
             gazeHit = hit;
             hasGazeHit = true;
 
-            Debug.DrawLine(
-                gazeRay.origin,
-                hit.point,
-                Color.green
-            );
-        }
-        else
-        {
-            Debug.DrawRay(
-                gazeRay.origin,
-                gazeRay.direction * maxDistance,
-                Color.red
-            );
+            GazeInteractable interactable =
+                hit.collider.GetComponent<GazeInteractable>();
+
+            if (interactable != null)
+            {
+                interactable.SendMessage(
+                    "OnGazeHit",
+                    hit,
+                    SendMessageOptions.DontRequireReceiver
+                );
+            }
         }
     }
 }

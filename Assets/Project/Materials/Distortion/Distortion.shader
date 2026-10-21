@@ -8,7 +8,7 @@ Shader "Custom/Distortion"
 
         _WarpSize ("Size", Float) = 0.3
 
-        _WarpDepth ("Depth", Float) = 1.0
+        _WarpMagnitude ("Magnitude", Float) = 1.0
 
         _WarpCurve ("Curve", 2D) = "white" {}
     }
@@ -44,7 +44,7 @@ Shader "Custom/Distortion"
 
             float4 _WarpPosition;
             float _WarpSize;
-            float _WarpDepth;
+            float _WarpMagnitude;
 
             struct appdata
             {
@@ -140,7 +140,7 @@ Shader "Custom/Distortion"
                 // -----------------------------------------
 
                 float distortion =
-                    curveValue * _WarpDepth;
+                    curveValue * _WarpMagnitude;
 
                 // -----------------------------------------
                 // Apply radial warp

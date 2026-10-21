@@ -3,7 +3,7 @@ using UnityEngine;
 public class EyeTrackingDebug : MonoBehaviour
 {
     public GameObject GameObject;
-    public GazeController GazeController;
+    public EyeTrackerController GazeController;
 
     void Update()
     {

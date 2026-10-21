@@ -1,8 +1,12 @@
+using Unity.XR.CoreUtils.Datums;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 
 [CreateAssetMenu(fileName = "DistortionData", menuName = "Custom/DistortionData")]
 public class DistortionData : ScriptableObject
 {
+    public float magnitude = 0.3f;
+    public float size = 1f;
     public AnimationCurve curve = AnimationCurve.Linear(0, 0, 1, 1);
     public Texture2D BakeCurve(int resolution = 512)
     {
@@ -29,4 +33,5 @@ public class DistortionData : ScriptableObject
 
         return texture;
     }
+
 }
